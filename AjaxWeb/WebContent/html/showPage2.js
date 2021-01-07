@@ -38,7 +38,7 @@ function addBtn(tr, callBackFunc) {
 	butn.innerHTML = 'Del';
 	let tdTag = document.createElement('td');
 	tdTag.onmouseover = function() {
-		this.style.background = 'lightblue';
+		this.style.background = 'red';
 	}
 	tdTag.onmouseout = function() {
 		this.style.background = 'white';
@@ -83,6 +83,22 @@ function contentRow(result) {
 	let trTags = [];
 	for (let j = 0; j < result.length; j++) {
 		let trTag = document.createElement('tr');
+		trTag.onclick = function() {
+			/*console.log(this.childNodes[5].firstChild.nodeValue);*/
+			document.getElementById('eid').value = this.childNodes[0].firstChild.nodeValue;
+			document.getElementById('fName').value = this.childNodes[1].firstChild.nodeValue;
+			document.getElementById('lName').value = this.childNodes[2].firstChild.nodeValue;
+			document.getElementById('email').value = this.childNodes[3].firstChild.nodeValue;
+			document.getElementById('pNumber').value = this.childNodes[4].firstChild.nodeValue;
+			document.getElementById('hDate').value = this.childNodes[5].firstChild.nodeValue;
+			document.getElementById('jobId').value = this.childNodes[6].firstChild.nodeValue;
+			document.getElementById('salary').value = this.childNodes[7].firstChild.nodeValue;
+			/*for (let n = 0; n < this.childNodes.length; n++) {
+				document.getElementById('ss').value = this.childNodes[n].firstChild.nodeValue;
+			}*/
+		}
+			let empId = result[j].childNodes[0].firstChild.nodeValue;
+			trTag.setAttribute('id', 'emp_' + empId);
 		for (let i = 0; i < result[0].childNodes.length; i++) {
 			let tdTag = document.createElement('td');
 			tdTag.onmouseover = function() {

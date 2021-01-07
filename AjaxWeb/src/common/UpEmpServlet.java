@@ -7,16 +7,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/addEmp")
-public class PutEmpServlet extends HttpServlet {
+@WebServlet("/upEmp")
+public class UpEmpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public PutEmpServlet() {
+	public UpEmpServlet() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String emId = request.getParameter("emId");
+		emId = emId == null ? "0" : emId;
+		int emI = Integer.parseInt(emId);
 		String firstName = request.getParameter("fName");
 		String lastName = request.getParameter("lName");
 		String email = request.getParameter("email");
@@ -25,8 +28,10 @@ public class PutEmpServlet extends HttpServlet {
 		String jobId = request.getParameter("jobId");
 		String salary = request.getParameter("salary");
 		int salar = Integer.parseInt(salary);
-
+		
 		EmployeeVO vo = new EmployeeVO();
+	
+		vo.setEmployeeId(emI);
 		vo.setFirstName(firstName);
 		vo.setLastName(lastName);
 		vo.setEmail(email);
@@ -36,22 +41,12 @@ public class PutEmpServlet extends HttpServlet {
 		vo.setSalary(salar);
 
 		EmpDAO dao = new EmpDAO();
-		EmployeeVO v = dao.insertEmp(vo);
-		String result = "<result>";
-		result += "<empId>" + v.getEmployeeId() + "</empId>";
-		result += "<fName>" + v.getFirstName() + "</fName>";
-		result += "<lName>" + v.getLastName() + "</lName>";
-		result += "<email>" + v.getEmail() + "</email>";
-		result += "<pNumber>" + v.getPhoneNumber() + "</pNumber>";
-		result += "<hireDate>" + v.getHireDate() + "</hireDate>";
-		result += "<jobId>" + v.getJobId() + "</jobId>";
-		result += "<salary>" + v.getSalary() + "</salary>";
-		result += "</result>";
-
-		response.getWriter().append(result);
-
+		if(dao.updateEmp(vo)) {
+			response.getWriter().append("<h1>OK</h1>");
+		}else {
+			response.getWriter().append("<h1>NG</h1>");
+		};
 	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
