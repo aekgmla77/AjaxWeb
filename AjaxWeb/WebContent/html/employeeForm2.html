@@ -3,15 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>html/employeeForm2</title>
-<script src="showPage2.js"></script>
+<script src="../js/showPage2.js"></script>
 </head>
 <body>
 	<table>
 		<input type="text" id='eid' name='eid' value='999'>
 		<tr>
 			<td>firstName</td>
-			<td><input type='text' id='fName' name='fName' value=
-			'Kang'></td>
+			<td><input type='text' id='fName' name='fName' value='Kang'></td>
 		</tr>
 		<tr>
 			<td>lastName</td>
@@ -23,11 +22,13 @@
 		</tr>
 		<tr>
 			<td>phoneNumber</td>
-			<td><input type='text' id='pNumber' name='pNumber' value='010.5555.6666'></td>
+			<td><input type='text' id='pNumber' name='pNumber'
+				value='010.5555.6666'></td>
 		</tr>
 		<tr>
 			<td>hireDate</td>
-			<td><input type='text' id='hDate' name='hDate' value='1999-09-09 15:15:15'></td>
+			<td><input type='text' id='hDate' name='hDate'
+				value='1999-09-09 15:15:15'></td>
 		</tr>
 		<tr>
 			<td>jobId</td>
@@ -45,62 +46,42 @@
 	</table>
 	<div id="show"></div>
 	<script>
-	function upsBtn() {
-		console.log(this);
-		let eid = document.getElementById('eid').value;
-		let fName = document.getElementById('fName').value;
-		let lName = document.getElementById('lName').value;
-		let email = document.getElementById('email').value;
-		let pNumber = document.getElementById('pNumber').value;
-		let hDate = document.getElementById('hDate').value;
-		let jobId = document.getElementById('jobId').value;
-		let salary = document.getElementById('salary').value;
+		function upsBtn() {
+			console.log(this);
+			let emid = document.getElementById('eid').value;
+			let fName = document.getElementById('fName').value;
+			let lName = document.getElementById('lName').value;
+			let email = document.getElementById('email').value;
+			let pNumber = document.getElementById('pNumber').value;
+			let hDate = document.getElementById('hDate').value;
+			let jobId = document.getElementById('jobId').value;
+			let salary = document.getElementById('salary').value;
 
-		let url = '../upEmp?fName=' + fName + '&lName=' + lName
-				+ '&email=' + email + '&pNumber=' + pNumber + '&hDate='
-				+ hDate + '&jobId=' + jobId + '&salary=' + salary;
-		let upsBtn = new XMLHttpRequest();
-		upsBtn.open('get', url);
-		upsBtn.send();
+			let url = 'fName=' + fName + '&lName=' + lName + '&email='
+					+ email + '&pNumber=' + pNumber + '&hDate=' + hDate
+					+ '&jobId=' + jobId + '&salary=' + salary + "&eid=" + emid;
+			let upsBtn = new XMLHttpRequest();
+			upsBtn.open('post', '../upEmp');
+			upsBtn.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			upsBtn.send(url);
+			upsBtn.onload = function() {
+				let doc = upsBtn.responseXML;
+				let result = doc.getElementsByTagName('result');
+				let eid = result[0].childNodes[0].firstChild.nodeValue;
+				let tr = document.getElementById('emp_' + eid);
+				tr.childNodes[0].firstChild.nodeValue = emid;
+				tr.childNodes[1].firstChild.nodeValue = fName;
+				tr.childNodes[2].firstChild.nodeValue = lName;
+				tr.childNodes[3].firstChild.nodeValue = email;
+				tr.childNodes[4].firstChild.nodeValue = pNumber;
+				tr.childNodes[5].firstChild.nodeValue = hDate;
+				tr.childNodes[6].firstChild.nodeValue = jobId;
+				tr.childNodes[7].firstChild.nodeValue = salary;
+				
+				console.log(upsBtn.responseXML);
 
-		upsBtn.onload = function() {
-			let doc = upsBtn.responseXML;
-			let result = doc.getElementsByTagName('result');
-
-			let trTag = document.createElement('tr');
-			for (let n = 0; n < result[0].childNodes.length; n++) {
-				let tdTag = document.createElement('td');
-				let val = result[0].childNodes[n].firstChild.nodeValue;
-				let tNode = document.createTextNode(val);
-				tdTag.appendChild(tNode);
-				trTag.appendChild(tdTag);
-			}
-			addB(trTag, myDel);
-			document.getElementById('tbl').appendChild(trTag);
-
-			function myDel() {
-				console.log(this.parentNode.parentNode.remove());
-				let d = this.parentNode.parentNode.childNodes[0].firstChild.nodeValue;
-				let r = new XMLHttpRequest();
-				r.open('get', '../deleteEmp?empId=' + d);
-				r.send();
-				r.onload = function() {
-					console.log(r.reponseText);
-				}
-			}
-
-			function addB(trTag, callBackFunc) {
-				let button = document.createElement('button');
-				button.innerHTML = 'Del';
-				button.onclick = callBackFunc;
-				let tdTag = document.createElement('td');
-				tdTag.appendChild(button);
-				trTag.appendChild(tdTag);
-
-				return trTag;
 			}
 		}
-	}
 
 		function saveBtn() {
 			console.log(this);

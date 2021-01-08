@@ -9,7 +9,7 @@
 	<!-- DAO(method), Servlet, ajax호출(XMLHttpRequest()) -->
 	<script>
     let xhtp = new XMLHttpRequest();
-	xhtp.open('get', 'LIstBoardServlet');
+	xhtp.open('get', '../LIstBoardServlet');
 	xhtp.send();
 	xhtp.onload = showCount;
 

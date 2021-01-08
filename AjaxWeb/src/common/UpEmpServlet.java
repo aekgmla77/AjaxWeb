@@ -17,35 +17,43 @@ public class UpEmpServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String emId = request.getParameter("emId");
-		emId = emId == null ? "0" : emId;
-		int emI = Integer.parseInt(emId);
-		String firstName = request.getParameter("fName");
-		String lastName = request.getParameter("lName");
+		String eid = request.getParameter("eid");
+		int emId = Integer.parseInt(eid);
+		String fName = request.getParameter("fName");
+		String lName = request.getParameter("lName");
 		String email = request.getParameter("email");
-		String phoneNumber = request.getParameter("pNumber");
+		String pNumber = request.getParameter("pNumber");
 		String hDate = request.getParameter("hDate");
 		String jobId = request.getParameter("jobId");
-		String salary = request.getParameter("salary");
-		int salar = Integer.parseInt(salary);
+		String salar = request.getParameter("salary");
+		int salary = Integer.parseInt(salar);
 		
 		EmployeeVO vo = new EmployeeVO();
 	
-		vo.setEmployeeId(emI);
-		vo.setFirstName(firstName);
-		vo.setLastName(lastName);
+		vo.setEmployeeId(emId);
+		vo.setFirstName(fName);
+		vo.setLastName(lName);
 		vo.setEmail(email);
-		vo.setPhoneNumber(phoneNumber);
+		vo.setPhoneNumber(pNumber);
 		vo.setHireDate(hDate);
 		vo.setJobId(jobId);
-		vo.setSalary(salar);
+		vo.setSalary(salary);
 
 		EmpDAO dao = new EmpDAO();
-		if(dao.updateEmp(vo)) {
-			response.getWriter().append("<h1>OK</h1>");
-		}else {
-			response.getWriter().append("<h1>NG</h1>");
-		};
+		EmployeeVO v = dao.updateEmp(vo);
+		String result = "<result>";
+		result += "<emId>" + v.getEmployeeId() + "</emId>";
+		result += "<fName>" + v.getFirstName() + "</fName>";
+		result += "<lName>" + v.getLastName() + "</lName>";
+		result += "<email>" + v.getEmail() + "</email>";
+		result += "<pNumber>" + v.getPhoneNumber() + "</pNumber>";
+		result += "<hireDate>" + v.getHireDate() + "</hireDate>";
+		result += "<jobId>" + v.getJobId() + "</jobId>";
+		result += "<salary>" + v.getSalary() + "</salary>";
+		result += "</result>";
+
+		response.getWriter().append(result);
+
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

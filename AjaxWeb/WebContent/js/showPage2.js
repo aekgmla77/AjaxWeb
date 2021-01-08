@@ -97,6 +97,7 @@ function contentRow(result) {
 				document.getElementById('ss').value = this.childNodes[n].firstChild.nodeValue;
 			}*/
 		}
+		
 			let empId = result[j].childNodes[0].firstChild.nodeValue;
 			trTag.setAttribute('id', 'emp_' + empId);
 		for (let i = 0; i < result[0].childNodes.length; i++) {

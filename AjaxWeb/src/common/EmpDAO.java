@@ -32,7 +32,7 @@ public class EmpDAO {
 		}
 	} //end of 생성자
 	
-	public boolean updateEmp(EmployeeVO vo) {
+	public EmployeeVO updateEmp(EmployeeVO vo) {
 		String sql = "update emp_temp set first_name = ?, "
 				+ "last_name = ?, email = ?, phone_number = ?, "
 				+ "hire_date = TO_DATE(?, 'yyyy-mm-dd hh24:mi:ss'),\r\n"
@@ -60,7 +60,7 @@ public class EmpDAO {
 				e.printStackTrace();
 			}
 		}
-		return r == 1 ? true : false;
+		return vo;
 	}
 	
 	public EmployeeVO insertEmp(EmployeeVO vo) {

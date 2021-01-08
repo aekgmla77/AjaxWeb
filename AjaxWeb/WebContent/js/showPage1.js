@@ -36,10 +36,10 @@ function titleRow(result) {
 		trTag.appendChild(thTag);
 	}
 	let thTag = document.createElement('th');
-	th.onmouseover = function() {
+	thTag.onmouseover = function() {
 		this.style.background = 'lightgreen';
 	}
-	th.onmouseout = function() {
+	thTag.onmouseout = function() {
 		this.style.background = 'white';
 	}
 	let textNode = document.createTextNode('처리');
@@ -53,6 +53,8 @@ function contentRow(result) {
 	let trTags = [];
 	for (let j = 0; j < result.length; j++) {
 		let trTag = document.createElement('tr');
+		trTag.onclick = function() {
+		}
 		for (let i = 0; i < result[0].childNodes.length; i++) {
 			let tdTag = document.createElement('td');
 			tdTag.onmouseover = function() {

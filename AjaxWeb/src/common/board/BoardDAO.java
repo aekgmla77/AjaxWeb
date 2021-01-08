@@ -12,7 +12,7 @@ import common.EmployeeVO;
 
 public class BoardDAO {
 	private Connection conn = null;
-	
+
 	public BoardDAO() {
 		try {
 			String user = "hr";
@@ -32,8 +32,24 @@ public class BoardDAO {
 			System.out.println("Unkonwn error");
 			e.printStackTrace();
 		}
-	} //end of 생성자
-	
+	} // end of 생성자
+
+	public boolean deleteBoard(BoardVO vo) {
+		String sql = "delete from boards where board_no = ?";
+		int r = 0;
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, vo.getBoardNo());
+
+			r = psmt.executeUpdate();
+			System.out.println(r + "건 삭제되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return r == 1 ? true : false;
+	}
+
+
 	public boolean insertBoard(BoardVO vo) {
 		String sql = "insert into boards(board_no, title, content, writer, creation_date)"
 				+ "values((select nvl(max(board_no),0)+1 from boards),?,?,?,sysdate)";
@@ -45,8 +61,7 @@ public class BoardDAO {
 			psmt.setString(3, vo.getWriter());
 			cnt = psmt.executeUpdate();
 			System.out.println(cnt + "건 입력되었습니다.");
-			
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -58,22 +73,22 @@ public class BoardDAO {
 		}
 		return cnt == 1 ? true : false;
 	}
-	
+
 	public List<BoardVO> getBorList() {
 		List<BoardVO> list = new ArrayList<>();
 		String sql = "select * from boards order by 1";
-		
+
 		try {
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			ResultSet rs = psmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				BoardVO vo = new BoardVO();
 				vo.setBoardNo(rs.getInt("board_no"));
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setWriter(rs.getString("writer"));
 				vo.setCreationDate(rs.getString("creation_date"));
-				
+
 				list.add(vo);
 			}
 		} catch (SQLException e) {
